@@ -1,10 +1,8 @@
-package server;
+package web.jetty.server;
 
-import handler.HelloJettyHandler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import properties.ServerSettings;
-import properties.Settings;
 
 public class BasicServer {
 

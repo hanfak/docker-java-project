@@ -1,8 +1,8 @@
-import handler.HelloJettyHandler;
+import web.jetty.handler.HelloJettyHandler;
 import properties.PropertiesReader;
 import properties.ServerSettings;
 import properties.Settings;
-import server.BasicServer;
+import web.jetty.server.BasicServer;
 
 public class ryif {
     public static void main(String[] args) throws Exception {

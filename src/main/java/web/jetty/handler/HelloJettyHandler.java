@@ -1,10 +1,11 @@
-package handler;
+package web.jetty.handler;
 
 
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import servlets.HelloKittyServlet;
-import servlets.HelloServlet;
+import web.jetty.servlet.HelloKittyServlet;
+import web.jetty.servlet.HelloServlet;
+import web.jetty.servlet.JsonResponseServlet;
 
 public class HelloJettyHandler {
 
@@ -12,6 +13,7 @@ public class HelloJettyHandler {
         ServletContextHandler servletHandler = new ServletContextHandler();
         servletHandler.addServlet(new ServletHolder(new HelloServlet()), "/hello");
         servletHandler.addServlet(new ServletHolder(new HelloKittyServlet()), "/");
+        servletHandler.addServlet(new ServletHolder(new JsonResponseServlet()), "/jj");
         return servletHandler;
     }
 }
