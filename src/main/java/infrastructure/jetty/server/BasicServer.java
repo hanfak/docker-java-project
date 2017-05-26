@@ -1,11 +1,10 @@
-package web.jetty.server;
+package infrastructure.jetty.server;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-import properties.ServerSettings;
+import infrastructure.properties.ServerSettings;
 
 public class BasicServer {
-
 
     private final Server server;
 
@@ -13,11 +12,9 @@ public class BasicServer {
         this.server = new Server(settings.serverPort());
     }
 
-
     public void withContext(ServletContextHandler servletHandler) {
         server.setHandler(servletHandler);
     }
-
 
     public void start() throws Exception {
         server.start();
@@ -27,11 +24,4 @@ public class BasicServer {
     public void stop() throws Exception {
         server.stop();
     }
-
-//    public static void main(String[] args) throws Exception {
-//        Server server = new Server(this.server.serverPort());
-//        server.setHandler(HelloJettyHandler.helloServletHandler());
-//        server.start();
-//        server.join();
-//    }
 }

@@ -1,4 +1,4 @@
-package web.jetty;
+package infrastructure.jetty.web;
 
 public interface Request {
 

@@ -1,4 +1,4 @@
-package properties;
+package infrastructure.properties;
 
 public class Settings implements ServerSettings {
     private PropertiesReader propertiesReader;

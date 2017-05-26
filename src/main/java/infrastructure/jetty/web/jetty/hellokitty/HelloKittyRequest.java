@@ -1,8 +1,10 @@
-package web.jetty;
+package infrastructure.jetty.web.jetty.hellokitty;
+
+import infrastructure.jetty.web.Request;
 
 import static java.lang.String.format;
 
-public class HelloKittyRequest implements  Request{
+public class HelloKittyRequest implements Request {
     public final int number;
 
     public HelloKittyRequest(int number) {
