@@ -15,6 +15,10 @@ import java.io.InputStream;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import static infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeDataManipulator.changeTitle;
+import static infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeDataReturnedManipulator.changeId;
+import static infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeDataReturnedMarshaller.*;
+import static infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeDataReturnedUnmarshaller.*;
 import static java.lang.String.format;
 
 public class FakeAPIResponseServlet extends HttpServlet {
@@ -23,29 +27,44 @@ public class FakeAPIResponseServlet extends HttpServlet {
 
     @Override
     protected void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //get body from request
-        String body = request.getReader()
-                             .lines()
-                             .collect(Collectors.joining(System.lineSeparator()));
-        System.out.println(format("body from request = %s\n", body));
-
-        // Store body string as json object to do what we want
-        JSONObject jsonObject = new JSONObject(body);
-        // Store json object into object and manipulates it (use static factory method)
-        String title = jsonObject.getString("title");
-        String jsonBody = jsonObject.getString("body");
-        Integer userId = jsonObject.getInt("userId");
-        FakeDataRequest fakeDataRequest = new FakeDataRequest(title, jsonBody, userId);
-        FakeDataRequest changedFakeDataRequest = FakeDataManipulator.changeTitle("No more Foo here", fakeDataRequest);
-
-        System.out.println(format("title from request = %s\n", title));
-        System.out.println(format("title from fake data object = %s\n", fakeDataRequest.title));
+        System.out.println("Unmarshalling response\n");
+        FakeDataRequest unmarshallFakeDataRequest = FakeDataUnmarshaller.unmarshall(request);
+        System.out.println("manipulating request\n");
+        FakeDataRequest changedFakeDataRequest = changeTitle("No more Foo here", unmarshallFakeDataRequest);
         System.out.println(format("changed title to send to third party = %s\n\n", changedFakeDataRequest.title));
 
+        System.out.println("Posting data to third party\n");
+        CloseableHttpResponse thirdPartyResponse = postToThirdPartyApi(changedFakeDataRequest);
+
+        System.out.println("Unmarshalling response from third party");
+        FakeDataReturnedRequest unmarshallFakeDataReturnedRequest = unmarshall(thirdPartyResponse);
+        System.out.println("manipulating response from third part\n");
+        FakeDataReturnedRequest changedFakeDataReturnedRequest = changeId(unmarshallFakeDataReturnedRequest);
+        System.out.println("changed fake data returned boby = " + changedFakeDataReturnedRequest.id);
+        System.out.println("\nMarshalling data for response");
+        JSONObject marshalledChangedFakeDataReturned = marshall(changedFakeDataReturnedRequest);
+        System.out.println("Sending repsonse back\n");
+        sendResponse(response, marshalledChangedFakeDataReturned);
+    }
+
+    private CloseableHttpResponse postToThirdPartyApi(FakeDataRequest changedFakeDataRequest) throws IOException {
         //create third party request
+        HttpPost thirdPartyRequest = createThirdPartyRequest(changedFakeDataRequest);
+
+        // excute request to third party and get response
+        return HttpClientBuilder.create().build().execute(thirdPartyRequest);
+    }
+
+    private void sendResponse(HttpServletResponse response, JSONObject marshalledChangedFakeDataReturned) throws IOException {
+        response.setContentType("application/json");
+        marshalledChangedFakeDataReturned.write(response.getWriter());
+        response.setStatus(201);
+    }
+
+    private HttpPost createThirdPartyRequest(FakeDataRequest changedFakeDataRequest) throws IOException {
         HttpPost thirdPartyRequest = new HttpPost(THIRD_PARTY_API_URL);
-        //turn request body into json and set the body for third party api request
-        StringEntity input = new StringEntity(changedFakeDataRequest.toJson());
+        System.out.println("Marshall fake data request for third party api request\n");
+        StringEntity input = new StringEntity(FakeDataMarshaller.marshall(changedFakeDataRequest));
         input.setContentType("application/json");
         thirdPartyRequest.setEntity(input);
 
@@ -55,22 +74,6 @@ public class FakeAPIResponseServlet extends HttpServlet {
         String result = s.hasNext() ? s.next() : "";
         System.out.println("body from request to 3rd party = " + result);
         //*********
-
-        // excute request to third party and get response
-        CloseableHttpResponse thirdPartyResponse = HttpClientBuilder.create()
-                                                    .build()
-                                                    .execute(thirdPartyRequest);
-        // unmarshaller thirdPartyResponse into object
-        FakeDataReturnedRequest unmarshallFakeDataReturnedRequest = FakeDataReturnedUnmarshaller.unmarshall(thirdPartyResponse);
-        // manipulate using another object method
-        FakeDataReturnedRequest changedFakeDataReturnedRequest = FakeDataReturnedManipulator.changeId(unmarshallFakeDataReturnedRequest);
-        System.out.println("changed fake data returned boby = " + changedFakeDataReturnedRequest.id);
-        // marshaller it using 'toJson' from object
-        JSONObject marshalledChangedFakeDataReturned = FakeDataReturnedMarshaller.marshall(changedFakeDataReturnedRequest);
-        // Write response with marshalled data
-        //Return response from 3rd party as a json as response to this servlet
-        response.setContentType("application/json");
-        marshalledChangedFakeDataReturned.write(response.getWriter());
-        response.setStatus(201);
+        return thirdPartyRequest;
     }
 }
