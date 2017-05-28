@@ -1,8 +1,8 @@
 package infrastructure.jetty.web.jetty.handler;
 
 
-import infrastructure.jetty.web.jetty.thirdpartyapi.FakeAPIResponseServlet;
-import infrastructure.jetty.web.jetty.thirdpartyapi.ThirdPartyAPIResponseServlet;
+import infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeAPIResponseServlet;
+import infrastructure.jetty.web.jetty.thirdpartyapi.starwars.ThirdPartyAPIResponseServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import infrastructure.jetty.web.jetty.hellokitty.HelloKittyServlet;

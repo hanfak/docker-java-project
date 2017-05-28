@@ -1,6 +1,6 @@
 package infrastructure.jetty.web.jetty.hellokitty;
 
-import infrastructure.jetty.web.jetty.json.JsonUnmarshaller;
+import infrastructure.jetty.web.JsonUnmarshaller;
 import org.json.JSONObject;
 
 public class HelloKittyUnmarshaller implements JsonUnmarshaller<HelloKittyRequest> {
