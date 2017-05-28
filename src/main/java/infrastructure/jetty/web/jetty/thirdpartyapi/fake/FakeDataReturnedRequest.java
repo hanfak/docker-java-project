@@ -4,9 +4,6 @@ import infrastructure.jetty.web.Request;
 
 import static java.lang.String.format;
 
-/**
- * Created by hanfak on 28/05/2017.
- */
 public class FakeDataReturnedRequest implements Request {
     public final String title;
     public final String jsonBody;
@@ -14,7 +11,6 @@ public class FakeDataReturnedRequest implements Request {
     public final Integer id;
 
     public FakeDataReturnedRequest(String title, String jsonBody, Integer userId, Integer id) {
-
         this.title = title;
         this.jsonBody = jsonBody;
         this.userId = userId;

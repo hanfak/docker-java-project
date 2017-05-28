@@ -1,10 +1,9 @@
 package infrastructure.jetty.web.jetty.thirdpartyapi.fake;
 
-/**
- * Created by hanfak on 28/05/2017.
- */
+import org.json.JSONObject;
+
 public class FakeDataMarshaller {
-    public static String marshall(FakeDataRequest changedFakeDataRequest) {
-        return changedFakeDataRequest.toJson();
+    public static JSONObject marshall(FakeDataRequest changedFakeDataRequest) {
+        return new JSONObject(changedFakeDataRequest.toJson());
     }
 }

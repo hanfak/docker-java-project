@@ -2,6 +2,7 @@ package infrastructure.jetty.web.jetty.handler;
 
 
 import infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeAPIResponseServlet;
+import infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeDataUnmarshaller;
 import infrastructure.jetty.web.jetty.thirdpartyapi.starwars.ThirdPartyAPIResponseServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -19,7 +20,7 @@ public class JettyHandler {
         servletHandler.addServlet(new ServletHolder(new HelloKittyServlet()), HELLO_KITTY_PATH);
         servletHandler.addServlet(new ServletHolder(new JsonResponseServlet()), JSON_PATH);
         servletHandler.addServlet(new ServletHolder(new ThirdPartyAPIResponseServlet()), STAR_WARS_PATH);
-        servletHandler.addServlet(new ServletHolder(new FakeAPIResponseServlet()), FAKE_API_PATH);
+        servletHandler.addServlet(new ServletHolder(new FakeAPIResponseServlet(new FakeDataUnmarshaller())), FAKE_API_PATH);
         return servletHandler;
     }
 }

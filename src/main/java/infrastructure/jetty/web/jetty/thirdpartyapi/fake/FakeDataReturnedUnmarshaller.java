@@ -1,5 +1,7 @@
 package infrastructure.jetty.web.jetty.thirdpartyapi.fake;
 
+import infrastructure.jetty.web.JsonApiUnmarshaller;
+import infrastructure.jetty.web.JsonUnmarshaller;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.json.JSONObject;
 
@@ -8,16 +10,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
-/**
- * Created by hanfak on 28/05/2017.
- */
-public class FakeDataReturnedUnmarshaller {
-    public static FakeDataReturnedRequest unmarshall(CloseableHttpResponse thirdPartyResponse) throws IOException {
-        BufferedReader br = new BufferedReader(
-                new InputStreamReader((thirdPartyResponse.getEntity().getContent())));
-        String thirdPartyResponseBody = br.lines()
-                .collect(Collectors.joining(System.lineSeparator()));
-        System.out.println("response from 3rd party = " + thirdPartyResponseBody);
+public class FakeDataReturnedUnmarshaller implements JsonApiUnmarshaller<FakeDataReturnedRequest> {
+
+    @Override
+    public FakeDataReturnedRequest unmarshall(CloseableHttpResponse thirdPartyResponse) throws IOException {
+        String thirdPartyResponseBody = stringifyBody(thirdPartyResponse);
+        System.out.println("body from response of 3rd party = " + thirdPartyResponseBody);
         JSONObject thirdPartyResponseJsonObject = new JSONObject(thirdPartyResponseBody);
 
         String title = thirdPartyResponseJsonObject.getString("title");
@@ -25,9 +23,13 @@ public class FakeDataReturnedUnmarshaller {
         Integer userId = thirdPartyResponseJsonObject.getInt("userId");
         Integer id = thirdPartyResponseJsonObject.getInt("id");
 
-        System.out.println("id from 3rd party request = " + id);
-
         return new FakeDataReturnedRequest(title, jsonBody, userId, id);
     }
-    // return JsonObject given fakeDataReturned object
+
+    private static String stringifyBody(CloseableHttpResponse thirdPartyResponse) throws IOException {
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader((thirdPartyResponse.getEntity().getContent())));
+        return br.lines()
+                .collect(Collectors.joining(System.lineSeparator()));
+    }
 }

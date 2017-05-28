@@ -15,7 +15,6 @@ public class FakeDataRequest implements Request {
         this.userId = userId;
     }
 
-
     @Override
     public String toJson() {
         return format("{\"title\": \"%s\"," +

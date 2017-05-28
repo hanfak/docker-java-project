@@ -1,6 +1,8 @@
 package infrastructure.jetty.web;
 
-public interface JsonUnmarshaller<Request> {
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
-    Request unmarshall(String requestBody);
+public interface JsonUnmarshaller<Request> {
+    Request unmarshall(HttpServletRequest requestBody) throws IOException;
 }
