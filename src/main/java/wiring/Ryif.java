@@ -10,9 +10,9 @@ public class Ryif {
     public static void main(String[] args) throws Exception {
         ServerSettings settings = new Settings(new PropertiesReader("localhost"));
 
-        BasicServer jettyServer = new BasicServer(settings);
-        jettyServer.withContext(JettyHandler.helloServletHandler());
+        BasicServer server = new BasicServer(settings);
+        server.withContext(JettyHandler.helloServletHandler());
 
-        jettyServer.start();
+        server.start();
     }
 }

@@ -4,5 +4,6 @@ public class RyifURLs {
     public static final String HELLO_KITTY_PATH = "/";
     public static final String JSON_PATH = "/jj";
     public static final String HELLO_PATH = "/hello";
+    public static final String STAR_WARS_PATH = "/starwars";
 
 }
