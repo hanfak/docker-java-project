@@ -8,6 +8,7 @@ import org.apache.http.entity.*;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.*;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,40 +21,57 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 public class FakeAPIResponseServlet extends HttpServlet {
+
+    private static final String THIRD_PARTY_API_URL = "http://jsonplaceholder.typicode.com/posts";
+
     @Override
     protected void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Use this instead
-        String jsonString = "{" +
-                "    \"title\": \"foo\"," +
-                "    \"body\": \"bar\"," +
-                "    \"userId\": \"1\"" +
-                "}";
-        HttpPost postRequest = new HttpPost("http://jsonplaceholder.typicode.com/posts");
+        //get body from request
+        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        System.out.println("body from request = " + body);
 
-        StringEntity input = new StringEntity(jsonString);
+        // Store body string as json object to do what we want
+        JSONObject jsonObject = new JSONObject(body);
+        Object title = jsonObject.get("title");
+        System.out.println(format("title from request = %s", title));
+
+        //create third party request
+        HttpPost thirdPartyRequest = new HttpPost(THIRD_PARTY_API_URL);
+        //turn request body into json and set the body for third party api request
+        StringEntity input = new StringEntity(body);
         input.setContentType("application/json");
-        postRequest.setEntity(input);
+        thirdPartyRequest.setEntity(input);
 
         //For logging purpose to see request
-        InputStream content = postRequest.getEntity().getContent();
+        InputStream content = thirdPartyRequest.getEntity().getContent();
         Scanner s = new Scanner(content).useDelimiter("\\A");
         String result = s.hasNext() ? s.next() : "";
-        System.out.println(result);
+        System.out.println("body from request to 3rd party = " + result);
+        //*********
 
-        CloseableHttpResponse theResponse = HttpClientBuilder.create().build().execute(postRequest);
-        //For logging purpose to get response back
+        // excute request to third party and get response
+        CloseableHttpResponse thirdPartyResponse = HttpClientBuilder.create().build().execute(thirdPartyRequest);
+        // turn body from 3rd party response into string
         BufferedReader br = new BufferedReader(
-                new InputStreamReader((theResponse.getEntity().getContent())));
+                new InputStreamReader((thirdPartyResponse.getEntity().getContent())));
+        String thirdPartyResponseBody = br.lines()
+                .collect(Collectors.joining(System.lineSeparator()));
+        System.out.println("response from 3rd party = " + thirdPartyResponseBody);
 
-        String output;
-        System.out.println("Output from Server .... \n");
-        while ((output = br.readLine()) != null) {
-            System.out.println(output);
-        }
+        //Turn body of 3rd party response into json object to do what we want,
+        // access specific fields
+        JSONObject jsonObject1 = new JSONObject(thirdPartyResponseBody);
+        Object id = jsonObject1.get("id");
+        System.out.println("id from 3rd party request = " + id);
 
+        //Return response from 3rd party as a json as response to this servlet
+        response.setContentType("application/json");
+        jsonObject1.write(response.getWriter());
         response.setStatus(201);
-
     }
 }
