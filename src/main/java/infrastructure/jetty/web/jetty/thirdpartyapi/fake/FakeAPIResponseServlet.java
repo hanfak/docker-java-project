@@ -22,7 +22,7 @@ import static java.lang.String.format;
 public class FakeAPIResponseServlet extends HttpServlet {
     private static final String THIRD_PARTY_API_URL = "http://jsonplaceholder.typicode.com/posts";
 
-    //
+    // this should typed to inteface JsonUnmarshaller instead
     private FakeDataUnmarshaller unmarshaller;
 
     public FakeAPIResponseServlet(FakeDataUnmarshaller unmarshaller) {
