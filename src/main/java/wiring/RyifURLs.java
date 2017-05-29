@@ -6,5 +6,6 @@ public class RyifURLs {
     public static final String HELLO_PATH = "/hello";
     public static final String STAR_WARS_PATH = "/thirdpartyapi";
     public static final String FAKE_API_PATH = "/fake";
+    public static final String DATABASE_PATH = "/db/*";
 
 }
