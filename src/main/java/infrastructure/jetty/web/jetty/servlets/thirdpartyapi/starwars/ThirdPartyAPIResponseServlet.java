@@ -1,4 +1,4 @@
-package infrastructure.jetty.web.jetty.thirdpartyapi.starwars;
+package infrastructure.jetty.web.jetty.servlets.thirdpartyapi.starwars;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;

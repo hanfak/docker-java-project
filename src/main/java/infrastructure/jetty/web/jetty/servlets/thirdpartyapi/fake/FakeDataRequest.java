@@ -1,4 +1,4 @@
-package infrastructure.jetty.web.jetty.thirdpartyapi.fake;
+package infrastructure.jetty.web.jetty.servlets.thirdpartyapi.fake;
 
 import infrastructure.jetty.web.Request;
 

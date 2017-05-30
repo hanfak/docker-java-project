@@ -1,4 +1,4 @@
-package infrastructure.jetty.web.jetty.json;
+package infrastructure.jetty.web.jetty.servlets.json;
 
 import org.json.JSONObject;
 

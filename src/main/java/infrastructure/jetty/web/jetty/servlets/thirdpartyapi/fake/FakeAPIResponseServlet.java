@@ -1,6 +1,5 @@
-package infrastructure.jetty.web.jetty.thirdpartyapi.fake;
+package infrastructure.jetty.web.jetty.servlets.thirdpartyapi.fake;
 
-import infrastructure.jetty.web.JsonUnmarshaller;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.*;
@@ -13,10 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeDataManipulator.changeTitle;
-import static infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeDataReturnedManipulator.changeId;
-import static infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeDataReturnedMarshaller.*;
-import static infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeDataReturnedUnmarshaller.*;
+import static infrastructure.jetty.web.jetty.servlets.thirdpartyapi.fake.FakeDataManipulator.changeTitle;
+import static infrastructure.jetty.web.jetty.servlets.thirdpartyapi.fake.FakeDataReturnedManipulator.changeId;
+import static infrastructure.jetty.web.jetty.servlets.thirdpartyapi.fake.FakeDataReturnedMarshaller.*;
 import static java.lang.String.format;
 
 public class FakeAPIResponseServlet extends HttpServlet {

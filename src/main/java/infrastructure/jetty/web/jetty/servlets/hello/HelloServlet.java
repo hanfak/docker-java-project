@@ -1,4 +1,4 @@
-package infrastructure.jetty.web.jetty.hello;
+package infrastructure.jetty.web.jetty.servlets.hello;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

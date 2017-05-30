@@ -1,4 +1,4 @@
-package infrastructure.jetty.web.jetty.hellokitty;
+package infrastructure.jetty.web.jetty.servlets.hellokitty;
 
 import infrastructure.jetty.web.Request;
 

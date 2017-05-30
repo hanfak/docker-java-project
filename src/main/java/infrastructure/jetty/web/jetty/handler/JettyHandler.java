@@ -1,15 +1,15 @@
 package infrastructure.jetty.web.jetty.handler;
 
 
-import infrastructure.jetty.web.jetty.database.DatabaseResponseServlet;
-import infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeAPIResponseServlet;
-import infrastructure.jetty.web.jetty.thirdpartyapi.fake.FakeDataUnmarshaller;
-import infrastructure.jetty.web.jetty.thirdpartyapi.starwars.ThirdPartyAPIResponseServlet;
+import infrastructure.jetty.web.jetty.servlets.database.DatabaseResponseServlet;
+import infrastructure.jetty.web.jetty.servlets.thirdpartyapi.fake.FakeAPIResponseServlet;
+import infrastructure.jetty.web.jetty.servlets.thirdpartyapi.fake.FakeDataUnmarshaller;
+import infrastructure.jetty.web.jetty.servlets.thirdpartyapi.starwars.ThirdPartyAPIResponseServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import infrastructure.jetty.web.jetty.hellokitty.HelloKittyServlet;
-import infrastructure.jetty.web.jetty.hello.HelloServlet;
-import infrastructure.jetty.web.jetty.json.JsonResponseServlet;
+import infrastructure.jetty.web.jetty.servlets.hellokitty.HelloKittyServlet;
+import infrastructure.jetty.web.jetty.servlets.hello.HelloServlet;
+import infrastructure.jetty.web.jetty.servlets.json.JsonResponseServlet;
 
 import java.sql.Connection;
 

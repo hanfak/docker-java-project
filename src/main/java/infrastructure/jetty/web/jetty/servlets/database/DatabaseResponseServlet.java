@@ -1,8 +1,7 @@
-package infrastructure.jetty.web.jetty.database;
+package infrastructure.jetty.web.jetty.servlets.database;
 
 import domain.ClientDBData;
 import domain.Clients;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -22,7 +20,7 @@ public class DatabaseResponseServlet extends HttpServlet {
 //    private JsonMarshaller marshaller;
 //    private RetrieveAllUseCase retrieveAllUseCase;
     private  Connection dbConnection;
-    private static Clients clients = new Clients(new ArrayList<>());
+//    private static Clients clients = new Clients(new ArrayList<>());
 
     public DatabaseResponseServlet(Connection dbConnection) {
         this.dbConnection = dbConnection;
@@ -34,9 +32,11 @@ public class DatabaseResponseServlet extends HttpServlet {
 
         // get parameter
         String pathInfo = request.getPathInfo();
+        // Have to trim last / if written
         String table = pathInfo.substring(pathInfo.lastIndexOf("/") + 1 );
         System.out.println("pathInfo = " + pathInfo);
         System.out.println("table = " + table);
+        Clients clients = new Clients(new ArrayList<>());
         // check if parameter has same table if not send 404 and json fail, no table by that name
         try {
             // access query database using parameter
@@ -52,7 +52,7 @@ public class DatabaseResponseServlet extends HttpServlet {
                         rs.getInt(1));
                 clients.addAClient(aClient);
             }
-            dbConnection.close();
+//            dbConnection.close(); // allows to access db an no errors
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -65,7 +65,9 @@ public class DatabaseResponseServlet extends HttpServlet {
         // database is cleared, but upon refreshing it returns all data
         // data is still persisted in memory, cleared array but only works once
         // is there a better way??
-        clients.clearClients();
+//        clients.clearClients();
+        // Without this the object is not cleared, and keeps on adding the results to
+        //it if the Clients object is instantiated in the field
     }
 
 

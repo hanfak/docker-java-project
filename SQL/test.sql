@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS clients
 INSERT INTO clients (title, body, userId) VALUES
 ('title1', 'body1', 4),
 ('title2', 'body2', 122),
+('title5', 'body25', 39),
 ('title3', 'body3', 533);
 
 CREATE TABLE cats

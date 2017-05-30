@@ -1,7 +1,6 @@
-package infrastructure.jetty.web.jetty.thirdpartyapi.fake;
+package infrastructure.jetty.web.jetty.servlets.thirdpartyapi.fake;
 
 import infrastructure.jetty.web.JsonApiUnmarshaller;
-import infrastructure.jetty.web.JsonUnmarshaller;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.json.JSONObject;
 
