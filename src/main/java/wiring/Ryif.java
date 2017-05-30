@@ -11,12 +11,10 @@ import java.sql.Connection;
 
 public class Ryif {
     public static void main(String[] args) throws Exception {
-        Settings settings = new Settings(new PropertiesReader("localhost"));
-        DatabaseConnectionManager databaseConnectionManager = new DatabaseConnectionManager(settings);
-        Connection dbConnection = databaseConnectionManager.getDBConnection();
+        ServerSettings settings = new Settings(new PropertiesReader("localhost"));
 
         BasicServer server = new BasicServer(settings);
-        server.withContext(JettyHandler.helloServletHandler(dbConnection));
+        server.withContext(JettyHandler.helloServletHandler());
 
         server.start();
     }
