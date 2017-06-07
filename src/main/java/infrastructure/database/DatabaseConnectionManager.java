@@ -24,9 +24,4 @@ public class DatabaseConnectionManager {
         }
         return null;
     }
-
-    private void closeDBConnection(Connection con) throws SQLException {
-        con.close();
-    }
-
 }

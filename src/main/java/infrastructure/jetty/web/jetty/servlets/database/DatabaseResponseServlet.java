@@ -20,21 +20,31 @@ import java.util.ArrayList;
 // Get all data from choosen table
 // response in json or xml
 public class DatabaseResponseServlet extends HttpServlet {
+    private final Settings settings;
+
+    public DatabaseResponseServlet(Settings settings) {
+
+        this.settings = settings;
+    }
 //    private JsonMarshaller marshaller;
 //    private RetrieveAllUseCase retrieveAllUseCase;
 
     // Use GET or POST as result may change, thinking POST as request is not idempotent
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("asdfa");
 
         String pathInfo = request.getPathInfo();
+//        System.out.println(request.getPathInfo());
+        System.out.println(request.getQueryString());
+
         // Have to trim last / if written
         String table = pathInfo.substring(pathInfo.lastIndexOf("/") + 1 );
 
         Clients clients = new Clients(new ArrayList<>());
         // check if parameter has same table if not send 404 and json fail, no table by that name
         try {
-            DatabaseConnectionManager databaseConnectionManager = new DatabaseConnectionManager(new Settings(new PropertiesReader("localhost")));
+            DatabaseConnectionManager databaseConnectionManager = new DatabaseConnectionManager(settings);
             Connection dbConnection = databaseConnectionManager.getDBConnection();
             Statement stmt = dbConnection.createStatement();
             String sqlQuery = "select * from " + table;
@@ -47,7 +57,8 @@ public class DatabaseResponseServlet extends HttpServlet {
                         rs.getInt(1));
                 clients.addAClient(aClient);
             }
-            dbConnection.close();
+
+            ;
         } catch(Exception e) {
             System.out.println(e);
         }
